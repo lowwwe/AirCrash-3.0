@@ -42,7 +42,7 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 	void drawPlane(sf::Sprite& t_plane);
-	
+	bool collisionDistance(sf::Vector2f t_location1, float t_radius1, sf::Vector2f t_location2, float t_radius2);
 	
 	void setupSprites();
 	void setupSky();
@@ -61,11 +61,13 @@ private:
 	sf::Vector2f m_bigPlaneLocation{ 200.0f,200.0f };// location of big plane
 	sf::Vector2f m_bigPlaneVelocity{ 1.0f,1.0f };// velocity of big plane
 	sf::Angle m_bigPlaneHeading{ sf::degrees(135.0f) };// heading for big plane
+	float m_bigPlaneRadius; // radikus of big plane
 
 	sf::Sprite m_smallPlaneSptire{ m_planesTexture}; // smalll plane sprite
 	sf::Vector2f m_smallPalneLocation{ 500.0f, 50.0f };// small palne location
 	sf::Vector2f m_smallPlaneVelocity{ -0.6f,0.6f };// small plane velocity
 	sf::Angle m_smallPlaneHeading{sf::degrees(225.0f)};// small plane heading
+	float m_smallPlaneRadius;// radius of bound circle for small plane
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message

@@ -163,6 +163,12 @@ void Game::update(sf::Time t_deltaTime)
 	keepOnScreen(m_bigPlaneLocation);
 	keepOnScreen(m_smallPalneLocation);
 
+	if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
+	{
+		m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+		m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+	}
+
 	if (m_DELETEexitGame)
 	{
 		m_window.close();
@@ -248,6 +254,25 @@ void Game::drawPlane(sf::Sprite& t_plane)
 	m_window.draw(localBounds);
 }
 
+bool Game::collisionDistance(sf::Vector2f t_location1, float t_radius1, sf::Vector2f t_location2, float t_radius2)
+{
+	bool result = false;
+	sf::Vector2f displacement;
+	float distance;
+	float minmumSafeDistance;
+
+	minmumSafeDistance = t_radius2 + t_radius1;
+	displacement = t_location1 - t_location2;
+	distance = displacement.length();
+	if (distance < minmumSafeDistance)
+	{
+		result = true;
+	}
+
+
+	return result;
+}
+
 /// <summary>
 /// load the font and setup the text message for screen
 /// </summary>
@@ -288,6 +313,7 @@ void Game::setupBigPlane()
 	m_bigPlaneSprite.setOrigin(sf::Vector2f{ 52.0f,46.5f });
 	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
 	m_bigPlaneSprite.setRotation(m_bigPlaneHeading);
+	m_bigPlaneRadius = 52.0f;
 }
 
 void Game::setupSamllPlane()
@@ -296,6 +322,7 @@ void Game::setupSamllPlane()
 	m_smallPlaneSptire.setOrigin(sf::Vector2f{ 43.5f,34.5f });
 	m_smallPlaneSptire.setPosition(m_smallPalneLocation);
 	m_smallPlaneSptire.setRotation(m_smallPlaneHeading);
+	m_smallPlaneRadius = 43.5f;
 }
 
 void Game::movePlanes()
