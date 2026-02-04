@@ -119,6 +119,10 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 		}
 
 	}
+	if (sf::Keyboard::Key::S == newKeypress->code)
+	{
+		m_stop = !m_stop;
+	}
 }
 
 void Game::processMouseDown(const std::optional<sf::Event> t_event)
@@ -176,23 +180,32 @@ void Game::update(sf::Time t_deltaTime)
 	movePlanes();
 	keepOnScreen(m_bigPlaneLocation);
 	keepOnScreen(m_smallPalneLocation);
-	if (m_boundingBoxes)
+	if (!m_exploding)
 	{
-		if (collisionBounding(m_bigPlaneSprite, m_smallPlaneSptire))
+		if (m_boundingBoxes)
 		{
-			//m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-			//m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			if (collisionBounding(m_bigPlaneSprite, m_smallPlaneSptire))
+			{
+				if (m_stop)
+				{
+					m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+					m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+				}
+			}
+		}
+		else
+		{
+			if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
+			{
+				if (m_stop)
+				{
+					m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+					m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+				}
+			}
 		}
 	}
 	else
-	{
-		if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
-		{
-			//m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-			//m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-		}
-	}
-	if (m_exploding)
 	{
 		animateExplosion();
 	}

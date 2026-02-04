@@ -89,6 +89,7 @@ private:
 
 	bool m_debugging{ false }; // are we showing the boxes
 	bool m_boundingBoxes{ false };
+	bool m_stop{ false }; // stop on crash
 
 };
 
