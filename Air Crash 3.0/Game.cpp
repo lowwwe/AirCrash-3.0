@@ -20,9 +20,9 @@ Game::Game() :
 	m_window{ sf::VideoMode{ sf::Vector2u{800U, 600U}, 32U }, "SFML Game 3.0" },
 	m_DELETEexitGame{false} //when true game will exit
 {
-	setupTexts(); // load font 
+	
 	setupSprites(); // load texture
-	setupAudio(); // load sounds
+	
 }
 
 /// <summary>
@@ -126,8 +126,8 @@ void Game::render()
 {
 	m_window.clear(ULTRAMARINE);
 
-	m_window.draw(m_DELETElogoSprite);
-	m_window.draw(m_DELETEwelcomeMessage);
+	m_window.draw(m_skySprite);
+	
 	
 	m_window.display();
 }
@@ -135,45 +135,28 @@ void Game::render()
 /// <summary>
 /// load the font and setup the text message for screen
 /// </summary>
-void Game::setupTexts()
-{
-	if (!m_jerseyFont.openFromFile("ASSETS\\FONTS\\Jersey20-Regular.ttf"))
-	{
-		std::cout << "problem loading arial black font" << std::endl;
-	}
-	m_DELETEwelcomeMessage.setFont(m_jerseyFont);
-	m_DELETEwelcomeMessage.setString("SFML Game");
-	m_DELETEwelcomeMessage.setPosition(sf::Vector2f{ 205.0f, 240.0f });
-	m_DELETEwelcomeMessage.setCharacterSize(96U);
-	m_DELETEwelcomeMessage.setOutlineColor(sf::Color::Black);
-	m_DELETEwelcomeMessage.setFillColor(sf::Color::Red);
-	m_DELETEwelcomeMessage.setOutlineThickness(2.0f);
 
-}
 
 /// <summary>
 /// load the texture and setup the sprite for the logo
 /// </summary>
 void Game::setupSprites()
 {
-	if (!m_DELETElogoTexture.loadFromFile("ASSETS\\IMAGES\\SFML-LOGO.png"))
-	{
-		// simple error message if previous call fails
-		std::cout << "problem loading logo" << std::endl;
-	}
-	
-	m_DELETElogoSprite.setTexture(m_DELETElogoTexture,true);// to reset the dimensions of texture
-	m_DELETElogoSprite.setPosition(sf::Vector2f{ 150.0f, 50.0f });
+	setupSky();
 }
 
 /// <summary>
-/// load sound file and assign buffers
+/// load texure and set repeated for sky
 /// </summary>
-void Game::setupAudio()
+void Game::setupSky()
 {
-	if (!m_DELETEsoundBuffer.loadFromFile("ASSETS\\AUDIO\\beep.wav"))
+	if (!m_skyTexture.loadFromFile("ASSETS/IMAGES/sky.jpg"))
 	{
-		std::cout << "Error loading beep sound" << std::endl;
+		std::cout << "the is falling down";
 	}
-	m_DELETEsound.play(); // test sound
+	m_skyTexture.setRepeated(true);
+	m_skySprite.setTextureRect(sf::IntRect{ sf::Vector2i{0,0}, sf::Vector2i{WIDTH,HEIGHT} });
+	m_skySprite.setPosition(sf::Vector2f{ 0.0f,0.0f });
 }
+
+

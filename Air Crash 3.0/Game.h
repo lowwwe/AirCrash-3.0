@@ -19,6 +19,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
+const unsigned WIDTH = 1000; // witdh of window
+const unsigned HEIGHT = 800; // height of window
 
 const sf::Color ULTRAMARINE{ 5, 55,242,255 }; // const colour
 
@@ -37,20 +39,17 @@ private:
 	void update(sf::Time t_deltaTime);
 	void render();
 	
-	void setupTexts();
+	
 	void setupSprites();
-	void setupAudio();
+	void setupSky();
+	
 
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message
 	
-	sf::Text m_DELETEwelcomeMessage{ m_jerseyFont }; // text used for message on screen
-	sf::Texture m_DELETElogoTexture;//  texture used for sfml logo
-	sf::Sprite m_DELETElogoSprite{ m_DELETElogoTexture }; // sprite used for sfml logo
-	
-	sf::SoundBuffer m_DELETEsoundBuffer; // buffer for beep sound
-	sf::Sound m_DELETEsound{ m_DELETEsoundBuffer }; // sound object to play
+	sf::Texture m_skyTexture;  //texture for sky
+	sf::Sprite m_skySprite{m_skyTexture};// sprite for sky
 	bool m_DELETEexitGame; // control exiting game
 
 };
