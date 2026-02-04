@@ -43,6 +43,9 @@ private:
 	void setupSprites();
 	void setupSky();
 	void setupBigPlane();
+	void setupSamllPlane();
+
+	void movePlanes();
 	
 
 
@@ -50,7 +53,12 @@ private:
 	sf::Sprite m_bigPlaneSprite{m_planesTexture};// sprite for big plane
 	sf::Vector2f m_bigPlaneLocation{ 200.0f,200.0f };// location of big plane
 	sf::Vector2f m_bigPlaneVelocity{ 1.0f,1.0f };// velocity of big plane
-	sf::Angle m_bigPlaneHeading{ sf::degrees(45.0f) };// heading for big plane
+	sf::Angle m_bigPlaneHeading{ sf::degrees(135.0f) };// heading for big plane
+
+	sf::Sprite m_smallPlaneSptire{ m_planesTexture}; // smalll plane sprite
+	sf::Vector2f m_smallPalneLocation{ 500.0f, 50.0f };// small palne location
+	sf::Vector2f m_smallPlaneVelocity{ -0.6f,0.6f };// small plane velocity
+	sf::Angle m_smallPlaneHeading{sf::degrees(225.0f)};// small plane heading
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message

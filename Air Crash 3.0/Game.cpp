@@ -113,6 +113,8 @@ void Game::checkKeyboardState()
 void Game::update(sf::Time t_deltaTime)
 {
 	checkKeyboardState();
+	movePlanes();
+
 	if (m_DELETEexitGame)
 	{
 		m_window.close();
@@ -128,6 +130,7 @@ void Game::render()
 
 	m_window.draw(m_skySprite);
 	m_window.draw(m_bigPlaneSprite);
+	m_window.draw(m_smallPlaneSptire);
 	
 	m_window.display();
 }
@@ -144,6 +147,7 @@ void Game::setupSprites()
 {
 	setupSky();
 	setupBigPlane();
+	setupSamllPlane();
 }
 
 /// <summary>
@@ -171,6 +175,22 @@ void Game::setupBigPlane()
 	m_bigPlaneSprite.setOrigin(sf::Vector2f{ 52.0f,46.5f });
 	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
 	m_bigPlaneSprite.setRotation(m_bigPlaneHeading);
+}
+
+void Game::setupSamllPlane()
+{
+	m_smallPlaneSptire.setTextureRect(sf::IntRect{ sf::Vector2i{362,115}, sf::Vector2i{87,69} });
+	m_smallPlaneSptire.setOrigin(sf::Vector2f{ 43.5f,34.5f });
+	m_smallPlaneSptire.setPosition(m_smallPalneLocation);
+	m_smallPlaneSptire.setRotation(m_smallPlaneHeading);
+}
+
+void Game::movePlanes()
+{
+	m_bigPlaneLocation += m_bigPlaneVelocity;
+	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
+	m_smallPalneLocation += m_smallPlaneVelocity;
+	m_smallPlaneSptire.setPosition(m_smallPalneLocation);
 }
 
 
