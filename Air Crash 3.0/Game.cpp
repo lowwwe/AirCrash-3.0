@@ -101,6 +101,10 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	{
 		m_DELETEexitGame = true; 
 	}
+	if (sf::Keyboard::Key::F1 == newKeypress->code)
+	{
+		m_debugging = !m_debugging;
+	}
 }
 
 void Game::processMouseDown(const std::optional<sf::Event> t_event)
@@ -173,10 +177,75 @@ void Game::render()
 	m_window.clear(ULTRAMARINE);
 
 	m_window.draw(m_skySprite);
-	m_window.draw(m_bigPlaneSprite);
-	m_window.draw(m_smallPlaneSptire);
-	
+
+	if (m_debugging)
+	{
+		drawPlane(m_smallPlaneSptire);
+		drawPlane(m_bigPlaneSprite);
+	}
+	else
+	{
+		m_window.draw(m_bigPlaneSprite);
+		m_window.draw(m_smallPlaneSptire);
+	}
+
 	m_window.display();
+}
+
+void Game::drawPlane(sf::Sprite& t_plane)
+{
+	sf::CircleShape dot{ 4.0f };
+	sf::CircleShape ring;
+	sf::RectangleShape globalBounds;
+	sf::RectangleShape localBounds;
+	float ringRadius = 0.0f;
+
+	m_window.draw(t_plane);
+	
+	localBounds.setFillColor(sf::Color::Transparent);
+	localBounds.setOutlineColor(sf::Color::Black);
+	localBounds.setOutlineThickness(2.0f);
+	localBounds.setPosition(t_plane.getPosition());
+	localBounds.setRotation(t_plane.getRotation());
+	localBounds.setSize(t_plane.getLocalBounds().size);
+	localBounds.setOrigin(t_plane.getOrigin());
+
+
+	globalBounds.setFillColor(sf::Color::Transparent);
+	globalBounds.setOutlineColor(sf::Color::Green);
+	globalBounds.setOutlineThickness(2.0f);
+	
+	globalBounds.setSize(t_plane.getGlobalBounds().size);		
+
+	globalBounds.setOrigin(sf::Vector2f{ 
+		t_plane.getGlobalBounds().size.x / 2.0f
+		, t_plane.getGlobalBounds().size.y / 2.0f });
+	globalBounds.setPosition(t_plane.getPosition());
+
+	dot.setFillColor(sf::Color::Yellow);
+	dot.setOrigin(sf::Vector2f{ 4.0f,4.0f });
+	dot.setPosition(t_plane.getPosition());
+
+	ring.setFillColor(sf::Color::Transparent);
+	ring.setOutlineColor(sf::Color::Red);
+	ring.setOutlineThickness(2.0f);
+
+	if (t_plane.getLocalBounds().size.x > t_plane.getLocalBounds().size.y)
+	{
+		ringRadius = t_plane.getLocalBounds().size.x / 2.0f;
+	}
+	else
+	{
+		ringRadius = t_plane.getLocalBounds().size.y / 2.0f;
+	}
+	ring.setRadius(ringRadius);
+	ring.setOrigin(sf::Vector2f{ ringRadius,ringRadius });
+	ring.setPosition(t_plane.getPosition());
+
+	m_window.draw(dot);
+	m_window.draw(ring);
+	m_window.draw(globalBounds);
+	m_window.draw(localBounds);
 }
 
 /// <summary>

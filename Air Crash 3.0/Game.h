@@ -41,6 +41,7 @@ private:
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
+	void drawPlane(sf::Sprite& t_plane);
 	
 	
 	void setupSprites();
@@ -72,6 +73,8 @@ private:
 	sf::Texture m_skyTexture;  //texture for sky
 	sf::Sprite m_skySprite{m_skyTexture};// sprite for sky
 	bool m_DELETEexitGame; // control exiting game
+
+	bool m_debugging{ false }; // are we showing the boxes
 
 };
 
