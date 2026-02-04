@@ -17,7 +17,7 @@
 /// load and setup the sounds
 /// </summary>
 Game::Game() :
-	m_window{ sf::VideoMode{ sf::Vector2u{800U, 600U}, 32U }, "SFML Game 3.0" },
+	m_window{ sf::VideoMode{ sf::Vector2u{WIDTH, HEIGHT}, 32U }, "SFML Game 3.0" },
 	m_DELETEexitGame{false} //when true game will exit
 {
 	
@@ -127,7 +127,7 @@ void Game::render()
 	m_window.clear(ULTRAMARINE);
 
 	m_window.draw(m_skySprite);
-	
+	m_window.draw(m_bigPlaneSprite);
 	
 	m_window.display();
 }
@@ -143,6 +143,7 @@ void Game::render()
 void Game::setupSprites()
 {
 	setupSky();
+	setupBigPlane();
 }
 
 /// <summary>
@@ -157,6 +158,19 @@ void Game::setupSky()
 	m_skyTexture.setRepeated(true);
 	m_skySprite.setTextureRect(sf::IntRect{ sf::Vector2i{0,0}, sf::Vector2i{WIDTH,HEIGHT} });
 	m_skySprite.setPosition(sf::Vector2f{ 0.0f,0.0f });
+}
+
+void Game::setupBigPlane()
+{
+
+	if (!m_planesTexture.loadFromFile("assets/images/planes.png"))
+	{
+		std::cout << "no planes";
+	}
+	m_bigPlaneSprite.setTextureRect(sf::IntRect{ sf::Vector2i{3,11}, sf::Vector2i{104,93} });
+	m_bigPlaneSprite.setOrigin(sf::Vector2f{ 52.0f,46.5f });
+	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
+	m_bigPlaneSprite.setRotation(m_bigPlaneHeading);
 }
 
 
