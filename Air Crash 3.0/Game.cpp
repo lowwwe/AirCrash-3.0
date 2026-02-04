@@ -78,6 +78,14 @@ void Game::processEvents()
 		{
 			processKeys(newEvent);
 		}
+		if (newEvent->is<sf::Event::MouseButtonPressed>())
+		{
+			processMouseDown(newEvent);
+		}
+		if (newEvent->is<sf::Event::MouseButtonReleased>())
+		{
+			processMouseUp(newEvent);
+		}
 	}
 }
 
@@ -93,6 +101,40 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	{
 		m_DELETEexitGame = true; 
 	}
+}
+
+void Game::processMouseDown(const std::optional<sf::Event> t_event)
+{
+	const sf::Event::MouseButtonPressed* newMousePress = t_event->getIf<sf::Event::MouseButtonPressed>();
+	m_mouseDownLocation.x =  static_cast<float>(newMousePress->position.x);
+	m_mouseDownLocation.y = static_cast<float>(newMousePress->position.y);
+}
+
+void Game::processMouseUp(const std::optional<sf::Event> t_event)
+{
+	sf::Vector2f mouseUpLocation;
+	sf::Vector2f displacement;
+	float headingRadians;
+	const sf::Event::MouseButtonReleased* newMouseRelease = t_event->getIf<sf::Event::MouseButtonReleased>();
+
+	mouseUpLocation = static_cast<sf::Vector2f>(newMouseRelease->position);
+	displacement = mouseUpLocation - m_mouseDownLocation;
+	headingRadians = std::atan2(displacement.y, displacement.x);
+	headingRadians += 1.57; // add 90 deg cause drawing
+	if (sf::Mouse::Button::Left == newMouseRelease->button)
+	{
+		m_bigPlaneHeading = sf::radians(headingRadians);
+		m_bigPlaneVelocity = displacement / 100.0f;
+		m_bigPlaneSprite.setRotation(m_bigPlaneHeading);
+	}
+	if (sf::Mouse::Button::Right == newMouseRelease->button)
+	{
+		m_smallPlaneHeading = sf::radians(headingRadians);
+		m_smallPlaneSptire.setRotation(m_smallPlaneHeading);
+		m_smallPlaneVelocity = displacement / 50.0f;
+	}
+
+
 }
 
 /// <summary>

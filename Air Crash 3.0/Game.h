@@ -35,6 +35,9 @@ private:
 
 	void processEvents();
 	void processKeys(const std::optional<sf::Event> t_event);
+	void processMouseDown(const std::optional<sf::Event> t_event);
+	void processMouseUp(const std::optional<sf::Event> t_event);
+
 	void checkKeyboardState();
 	void update(sf::Time t_deltaTime);
 	void render();
@@ -49,6 +52,8 @@ private:
 	void keepOnScreen(sf::Vector2f& t_location);
 	
 
+
+	sf::Vector2f m_mouseDownLocation; // mouse down position
 
 	sf::Texture m_planesTexture;// texture for planes
 	sf::Sprite m_bigPlaneSprite{m_planesTexture};// sprite for big plane
