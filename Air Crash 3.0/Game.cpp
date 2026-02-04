@@ -114,6 +114,8 @@ void Game::update(sf::Time t_deltaTime)
 {
 	checkKeyboardState();
 	movePlanes();
+	keepOnScreen(m_bigPlaneLocation);
+	keepOnScreen(m_smallPalneLocation);
 
 	if (m_DELETEexitGame)
 	{
@@ -191,6 +193,29 @@ void Game::movePlanes()
 	m_bigPlaneSprite.setPosition(m_bigPlaneLocation);
 	m_smallPalneLocation += m_smallPlaneVelocity;
 	m_smallPlaneSptire.setPosition(m_smallPalneLocation);
+}
+
+void Game::keepOnScreen(sf::Vector2f& t_location)
+{
+	float screenWidth = static_cast<float>(WIDTH);
+	float screenHeight = static_cast<float>(HEIGHT);
+	if (t_location.x < 0.0f)
+	{
+		t_location.x = 0.0f;
+	}
+	if (t_location.x > screenWidth)
+	{
+		t_location.x = screenWidth;
+	}
+	if (t_location.y < 0.0f)
+	{
+		t_location.y = 0.0f;
+	}
+	if (t_location.y > screenHeight)
+	{
+		t_location.y = screenHeight;
+	}
+
 }
 
 
