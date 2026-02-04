@@ -43,7 +43,8 @@ private:
 	void render();
 	void drawPlane(sf::Sprite& t_plane);
 	bool collisionDistance(sf::Vector2f t_location1, float t_radius1, sf::Vector2f t_location2, float t_radius2);
-	
+	bool collisionBounding(sf::Sprite& t_plane1, sf::Sprite& t_plane2);
+
 	void setupSprites();
 	void setupSky();
 	void setupBigPlane();
@@ -77,6 +78,7 @@ private:
 	bool m_DELETEexitGame; // control exiting game
 
 	bool m_debugging{ false }; // are we showing the boxes
+	bool m_boundingBoxes{ false };
 
 };
 

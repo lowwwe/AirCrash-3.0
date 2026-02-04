@@ -105,6 +105,20 @@ void Game::processKeys(const std::optional<sf::Event> t_event)
 	{
 		m_debugging = !m_debugging;
 	}
+	if (sf::Keyboard::Key::B == newKeypress->code)
+	{
+		if (m_boundingBoxes)
+		{
+			m_boundingBoxes = false;
+			m_window.setTitle("Distance collision");
+		}
+		else
+		{
+			m_boundingBoxes = true;
+			m_window.setTitle("Bounding Boxes");
+		}
+
+	}
 }
 
 void Game::processMouseDown(const std::optional<sf::Event> t_event)
@@ -162,13 +176,22 @@ void Game::update(sf::Time t_deltaTime)
 	movePlanes();
 	keepOnScreen(m_bigPlaneLocation);
 	keepOnScreen(m_smallPalneLocation);
-
-	if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
+	if (m_boundingBoxes)
 	{
-		m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-		m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+		if (collisionBounding(m_bigPlaneSprite, m_smallPlaneSptire))
+		{
+			m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+		}
 	}
-
+	else
+	{
+		if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
+		{
+			m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+		}
+	}
 	if (m_DELETEexitGame)
 	{
 		m_window.close();
@@ -270,6 +293,17 @@ bool Game::collisionDistance(sf::Vector2f t_location1, float t_radius1, sf::Vect
 	}
 
 
+	return result;
+}
+
+bool Game::collisionBounding(sf::Sprite& t_plane1, sf::Sprite& t_plane2)
+{
+	bool result = false;
+	std::optional<sf::FloatRect> overlap = t_plane1.getGlobalBounds().findIntersection(t_plane2.getGlobalBounds());
+	if (overlap.has_value())
+	{
+		result = true;
+	}
 	return result;
 }
 
