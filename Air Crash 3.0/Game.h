@@ -49,9 +49,11 @@ private:
 	void setupSky();
 	void setupBigPlane();
 	void setupSamllPlane();
+	void setupExplosion();
 
 	void movePlanes();
 	void keepOnScreen(sf::Vector2f& t_location);
+	void animateExplosion();
 	
 
 
@@ -69,6 +71,14 @@ private:
 	sf::Vector2f m_smallPlaneVelocity{ -0.6f,0.6f };// small plane velocity
 	sf::Angle m_smallPlaneHeading{sf::degrees(225.0f)};// small plane heading
 	float m_smallPlaneRadius;// radius of bound circle for small plane
+
+
+	sf::Texture m_explosionTexture;// texure
+	sf::Sprite m_explosionSprite{m_explosionTexture};// srite
+	bool m_exploding{ false };// are we exploding
+	int m_explosionFrame{ 0 };// current frame
+	float m_explosionFrameCounter{ 0.0f };// frame counter
+	float m_frameIncrement{ 0.6f };// frame increment
 	
 	sf::RenderWindow m_window; // main SFML window
 	sf::Font m_jerseyFont;// font used by message

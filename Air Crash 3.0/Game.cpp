@@ -180,17 +180,21 @@ void Game::update(sf::Time t_deltaTime)
 	{
 		if (collisionBounding(m_bigPlaneSprite, m_smallPlaneSptire))
 		{
-			m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-			m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			//m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			//m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
 		}
 	}
 	else
 	{
 		if (collisionDistance(m_bigPlaneLocation, m_bigPlaneRadius, m_smallPalneLocation, m_smallPlaneRadius))
 		{
-			m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
-			m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			//m_bigPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
+			//m_smallPlaneVelocity = sf::Vector2f{ 0.0f,0.0f };
 		}
+	}
+	if (m_exploding)
+	{
+		animateExplosion();
 	}
 	if (m_DELETEexitGame)
 	{
@@ -217,7 +221,10 @@ void Game::render()
 		m_window.draw(m_bigPlaneSprite);
 		m_window.draw(m_smallPlaneSptire);
 	}
-
+	if (m_exploding)
+	{
+		m_window.draw(m_explosionSprite);
+	}
 	m_window.display();
 }
 
@@ -289,6 +296,8 @@ bool Game::collisionDistance(sf::Vector2f t_location1, float t_radius1, sf::Vect
 	distance = displacement.length();
 	if (distance < minmumSafeDistance)
 	{
+		m_exploding = true;
+		m_explosionSprite.setPosition((t_location1 + t_location2) / 2.0f);
 		result = true;
 	}
 
@@ -303,6 +312,8 @@ bool Game::collisionBounding(sf::Sprite& t_plane1, sf::Sprite& t_plane2)
 	if (overlap.has_value())
 	{
 		result = true;
+		m_exploding = true;
+		m_explosionSprite.setPosition(overlap->position + overlap->size / 2.0f);
 	}
 	return result;
 }
@@ -320,6 +331,7 @@ void Game::setupSprites()
 	setupSky();
 	setupBigPlane();
 	setupSamllPlane();
+	setupExplosion();
 }
 
 /// <summary>
@@ -359,6 +371,17 @@ void Game::setupSamllPlane()
 	m_smallPlaneRadius = 43.5f;
 }
 
+void Game::setupExplosion()
+{
+	if (!m_explosionTexture.loadFromFile("assets/images/explosion.png"))
+	{
+		std::cout << "where my bang gone";
+	}
+	m_explosionSprite.setTextureRect(sf::IntRect{ sf::Vector2i{0,0}, sf::Vector2i{100,100} });
+	m_explosionSprite.setOrigin(sf::Vector2f{ 50.0f,50.0f });
+
+}
+
 void Game::movePlanes()
 {
 	m_bigPlaneLocation += m_bigPlaneVelocity;
@@ -388,6 +411,31 @@ void Game::keepOnScreen(sf::Vector2f& t_location)
 		t_location.y = screenHeight;
 	}
 
+}
+
+void Game::animateExplosion()
+{
+	int frame;
+	const int ROWS = 6;
+	const int COLS = 8;
+	const int SIZE = 100;
+	int col;
+	int row;
+
+	m_explosionFrameCounter += m_frameIncrement;
+	frame = static_cast<int>(m_explosionFrameCounter);
+	if (frame > 47)
+	{
+		m_exploding = false;
+		frame = 0;
+		m_explosionFrameCounter = 0.0f;
+	}
+	if (frame != m_explosionFrame)
+	{
+		col = frame % COLS;
+		row = frame / COLS;
+		m_explosionSprite.setTextureRect(sf::IntRect{ sf::Vector2i{col * SIZE, row * SIZE}, sf::Vector2i{SIZE,SIZE} });
+	}
 }
 
 
